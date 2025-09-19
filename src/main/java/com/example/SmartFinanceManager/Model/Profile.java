@@ -1,7 +1,6 @@
 package com.example.SmartFinanceManager.Model;
 
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

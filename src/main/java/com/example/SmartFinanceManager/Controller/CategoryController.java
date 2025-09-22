@@ -23,7 +23,20 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> categoryList(){
+    public ResponseEntity<List<CategoryDto>> getCategoryList(){
+        List<CategoryDto> categoryList = categoryService.getCategoriesForCurrentUser();
+        return ResponseEntity.status(HttpStatus.OK).body(categoryList);
+    }
 
+    @GetMapping("/{type}")
+    public ResponseEntity<List<CategoryDto>> getCategoryListByType(@PathVariable String type){
+        List<CategoryDto> categoryList = categoryService.getCategoriesByTypeForCurrentUser(type);
+        return ResponseEntity.status(HttpStatus.OK).body(categoryList);
+    }
+
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable Long categoryId,@RequestBody CategoryDto categoryDto) {
+        CategoryDto updateCategory = categoryService.updateCategory(categoryId, categoryDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updateCategory);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,28 @@ public class CategoryService {
                 .stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<CategoryDto> getCategoriesByTypeForCurrentUser(String type){
+        Profile profile = profileService.getCurrentProfile();
+        List<Category> categories = categoryRepository.findByTypeAndProfileId(type, profile.getId());
+        return categories.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public CategoryDto updateCategory(Long categoryId, CategoryDto categoryDto) {
+        Profile profile = profileService.getCurrentProfile();
+        Category category = categoryRepository.findByIdAndProfileId(categoryId, profile.getId())
+                .orElseThrow(()-> new RuntimeException("Category not found"));
+
+        category.setName(categoryDto.getName());
+        category.setIcon(categoryDto.getIcon());
+
+        category = categoryRepository.save(category);
+
+        return toDto(category);
+
     }
 
     // Helper Method

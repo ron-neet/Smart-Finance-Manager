@@ -45,6 +45,8 @@ public class ExpenseService {
         return allExpense.stream().map(this::toDto).collect(Collectors.toList());
     }
 
+    public
+
     // Helper Methods
     private Expense toEntity(ExpenseDto expenseDto, Profile profile, Category category) {
         return Expense.builder()

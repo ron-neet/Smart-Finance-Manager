@@ -15,7 +15,7 @@ public interface ExpenseRepository extends CrudRepository<Expense, Long> {
 
     List<Expense> findByProfileIdOrderByDateDesc(Long profileId);
 
-    List<Expense> findTopByProfileIdOrderByDateDesc(Long profileId);
+    List<Expense> findTop5ByProfileIdOrderByDateDesc(Long profileId);
 
     @Query("SELECT SUM(e.amount) FROM Expense e where e.profile.id = :profileId")
     BigDecimal findTotalExpenseByProfileId(@Param("profileId") Long profileId);
@@ -30,4 +30,5 @@ public interface ExpenseRepository extends CrudRepository<Expense, Long> {
 
     List<Expense> findByProfileIdAndDateBetween(Long Profile, LocalDate startDate, LocalDate endDate);
 
+    List<Expense> findByProfileIdAndDate(Long profileId, LocalDate date);
 }

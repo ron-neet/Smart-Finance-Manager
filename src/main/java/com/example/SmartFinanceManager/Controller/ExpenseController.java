@@ -18,14 +18,20 @@ public class ExpenseController {
 
     @PostMapping
     public ResponseEntity<ExpenseDto> addExpense(@RequestBody ExpenseDto expenseDto) {
-        ExpenseDto addExpense =  expenseService.addExpense(expenseDto);
+        ExpenseDto addExpense = expenseService.addExpense(expenseDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(addExpense);
     }
 
     @GetMapping
     public ResponseEntity<List<ExpenseDto>> getAllExpensesForAMonth() {
         List<ExpenseDto> getExpense = expenseService.getCurrentMonthExpensesForCurrentUser();
-        return  ResponseEntity.status(HttpStatus.OK).body(getExpense);
+        return ResponseEntity.status(HttpStatus.OK).body(getExpense);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteExpense(@PathVariable Long id) {
+        expenseService.deleteExpenseById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -6,6 +6,7 @@ import com.example.SmartFinanceManager.Model.Profile;
 import com.example.SmartFinanceManager.Repository.ProfileRepository;
 import com.example.SmartFinanceManager.Utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,13 +28,16 @@ public class ProfileService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
+    @Value("${app.activation.url}")
+    private String activationUrl;
+
     public ProfileDto registerProfile(ProfileDto profileDto) {
         Profile newProfile = toEntity(profileDto);
         newProfile.setActivationToken(UUID.randomUUID().toString());
         newProfile = profileRepository.save(newProfile);
 
         // Send Activation Email
-        String activationLink = "http://localhost:8080/activate?token=" + newProfile.getActivationToken();
+        String activationLink = activationUrl+"/activate?token=" + newProfile.getActivationToken();
         String subject = "Activate your Smart Finance Manager Account";
         String body = "Click to activate your Account: " + activationLink;
         emailService.sendMail(newProfile.getEmail(), subject, body);
